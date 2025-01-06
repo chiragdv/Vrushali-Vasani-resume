@@ -19,7 +19,7 @@
         canvas {
             display: block;
             margin-bottom: 20px; /* Add some space between the pages */
-            max-width: 100%; /* Make sure the canvas doesn't overflow the container */
+            max-width: 100%; /* Ensure canvas fits within the container */
         }
 
         /* Style for the download icon */
@@ -73,12 +73,12 @@
             // Function to render a page with enhanced resolution
             function renderPage(num) {
                 pdfDoc.getPage(num).then(function(page) {
-                    // Calculate the scale based on the container's width
+                    // Calculate the scale based on the container's width and enhance for high DPI
                     var containerWidth = pdfContainer.clientWidth;
                     var scale = containerWidth / page.getViewport({ scale: 1 }).width;
 
-                    // Increase the scale factor for higher quality rendering
-                    var enhancedScale = Math.min(scale, 10); // Adjusted scale for HD resolution (increased from 3 to 5)
+                    // Use device pixel ratio to enhance resolution on high-DPI devices
+                    var enhancedScale = Math.min(scale * window.devicePixelRatio, 2.5); // Increase scale factor based on DPI for clarity
 
                     var viewport = page.getViewport({ scale: enhancedScale });
                     var canvas = document.createElement('canvas');
