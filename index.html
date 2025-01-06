@@ -12,18 +12,47 @@
             overflow-y: auto; /* Allow vertical scrolling if the PDF has multiple pages */
             margin: 0 auto;
             border: 1px solid #ddd;
+            position: relative; /* To position the download icon */
         }
 
         canvas {
             display: block;
             margin-bottom: 20px; /* Add some space between the pages */
         }
+
+        /* Style for the download icon */
+        .download-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #2cb5e5;
+            color: white;
+            border: none;
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .download-btn i {
+            font-size: 20px;
+        }
     </style>
 
     <!-- PDF.js library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
+
+    <!-- Font Awesome for download icon -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
+
+    <!-- Download PDF Button -->
+    <a href="CA Vrushali Vasani Resume V2.pdf" download>
+        <button class="download-btn">
+            <i class="fas fa-download"></i> Download PDF
+        </button>
+    </a>
 
     <div class="pdf-container" id="pdf-viewer"></div>
 
@@ -45,7 +74,10 @@
                     var containerWidth = pdfContainer.clientWidth;
                     var scale = containerWidth / page.getViewport({ scale: 1 }).width;
 
-                    var viewport = page.getViewport({ scale: scale });
+                    // Set scale for better resolution
+                    var enhancedScale = Math.min(scale, 2); // HD resolution (higher scale for better quality)
+
+                    var viewport = page.getViewport({ scale: enhancedScale });
                     var canvas = document.createElement('canvas');
                     var context = canvas.getContext('2d');
                     canvas.height = viewport.height;
