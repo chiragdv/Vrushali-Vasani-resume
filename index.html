@@ -78,7 +78,7 @@
                     var scale = containerWidth / page.getViewport({ scale: 1 }).width;
 
                     // Increase the scale factor for higher quality rendering
-                    var enhancedScale = Math.min(scale, 5); // Adjusted scale for HD resolution (increased from 3 to 5)
+                    var enhancedScale = Math.min(scale, 10); // Adjusted scale for HD resolution (increased from 3 to 5)
 
                     var viewport = page.getViewport({ scale: enhancedScale });
                     var canvas = document.createElement('canvas');
