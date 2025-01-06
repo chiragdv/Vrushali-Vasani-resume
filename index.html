@@ -22,7 +22,7 @@
 
         /* Style for the download icon */
         .download-btn {
-            position: absolute;
+            position: fixed; /* Keep the button fixed at the top right corner */
             top: 10px;
             right: 10px;
             background-color: #2cb5e5;
@@ -32,6 +32,7 @@
             font-size: 16px;
             cursor: pointer;
             border-radius: 5px;
+            z-index: 100; /* Ensure it stays on top */
         }
 
         .download-btn i {
@@ -74,8 +75,8 @@
                     var containerWidth = pdfContainer.clientWidth;
                     var scale = containerWidth / page.getViewport({ scale: 1 }).width;
 
-                    // Set scale for better resolution
-                    var enhancedScale = Math.min(scale, 2); // HD resolution (higher scale for better quality)
+                    // Set scale for better resolution (HD quality)
+                    var enhancedScale = Math.min(scale, 3); // Increased scale for higher resolution (HD quality)
 
                     var viewport = page.getViewport({ scale: enhancedScale });
                     var canvas = document.createElement('canvas');
