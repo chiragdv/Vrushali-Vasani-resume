@@ -9,9 +9,14 @@
         .pdf-container {
             width: 100%;
             height: 100vh; /* Ensure it takes up the full height of the viewport */
-            overflow: hidden;
+            overflow-y: auto; /* Allow vertical scrolling if the PDF has multiple pages */
             margin: 0 auto;
             border: 1px solid #ddd;
+        }
+
+        canvas {
+            display: block;
+            margin-bottom: 20px; /* Add some space between the pages */
         }
     </style>
 
@@ -32,7 +37,6 @@
         // Fetch and render the PDF
         pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
             var pdfDoc = pdfDoc_;
-            var pageNum = 1;
 
             // Function to render a page
             function renderPage(num) {
@@ -56,8 +60,11 @@
                 });
             }
 
-            // Render the first page
-            renderPage(pageNum);
+            // Loop through all pages and render them
+            for (var pageNum = 1; pageNum <= pdfDoc.numPages; pageNum++) {
+                renderPage(pageNum);
+            }
+
         }).catch(function(error) {
             console.log(error);
             pdfContainer.innerHTML = '<p>Unable to load PDF. Please try again later.</p>';
@@ -66,7 +73,3 @@
 
 </body>
 </html>
-
-
-
-
