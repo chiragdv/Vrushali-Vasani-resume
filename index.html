@@ -70,15 +70,15 @@
         pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
             var pdfDoc = pdfDoc_;
 
-            // Function to render a page
+            // Function to render a page with enhanced resolution
             function renderPage(num) {
                 pdfDoc.getPage(num).then(function(page) {
                     // Calculate the scale based on the container's width
                     var containerWidth = pdfContainer.clientWidth;
                     var scale = containerWidth / page.getViewport({ scale: 1 }).width;
 
-                    // Set scale for better resolution (HD quality)
-                    var enhancedScale = Math.min(scale, 3); // Adjust the scale to get high quality rendering
+                    // Increase the scale factor for higher quality rendering
+                    var enhancedScale = Math.min(scale, 5); // Adjusted scale for HD resolution (increased from 3 to 5)
 
                     var viewport = page.getViewport({ scale: enhancedScale });
                     var canvas = document.createElement('canvas');
@@ -87,7 +87,7 @@
                     canvas.width = viewport.width;
                     pdfContainer.appendChild(canvas);
 
-                    // Render the page on the canvas
+                    // Render the page on the canvas with enhanced resolution
                     page.render({
                         canvasContext: context,
                         viewport: viewport
