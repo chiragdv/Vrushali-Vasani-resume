@@ -1,27 +1,72 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-     <meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Display PDF</title>
     <style>
         /* Make the PDF container responsive */
         .pdf-container {
             width: 100%;
-            height: 80vh; /* Adjust height to make it more flexible */
+            height: 100vh; /* Ensure it takes up the full height of the viewport */
             overflow: hidden;
             margin: 0 auto;
+            border: 1px solid #ddd;
         }
     </style>
+
+    <!-- PDF.js library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
 </head>
-<body>  
- <div class="pdf-container">
-        <!-- Use object tag for better compatibility across browsers -->
-        <object data="CA Vrushali Vasani Resume V2.pdf" type="application/pdf" width="100%" height="100%">
-            <!-- Fallback content for browsers that don't support PDF rendering -->
-            <p>Your browser does not support viewing PDF files. You can <a href="path/to/your/pdf.pdf" download>download the PDF</a> instead.</p>
-        </object>
-    </div>
+<body>
+
+    <div class="pdf-container" id="pdf-viewer"></div>
+
+    <script>
+        // Path to your PDF file
+        var url = 'CA Vrushali Vasani Resume V2.pdf';
+
+        // The PDF.js viewer
+        var pdfContainer = document.getElementById('pdf-viewer');
+
+        // Fetch and render the PDF
+        pdfjsLib.getDocument(url).promise.then(function(pdfDoc_) {
+            var pdfDoc = pdfDoc_;
+            var pageNum = 1;
+
+            // Function to render a page
+            function renderPage(num) {
+                pdfDoc.getPage(num).then(function(page) {
+                    // Calculate the scale based on the container's width
+                    var containerWidth = pdfContainer.clientWidth;
+                    var scale = containerWidth / page.getViewport({ scale: 1 }).width;
+
+                    var viewport = page.getViewport({ scale: scale });
+                    var canvas = document.createElement('canvas');
+                    var context = canvas.getContext('2d');
+                    canvas.height = viewport.height;
+                    canvas.width = viewport.width;
+                    pdfContainer.appendChild(canvas);
+
+                    // Render the page on the canvas
+                    page.render({
+                        canvasContext: context,
+                        viewport: viewport
+                    });
+                });
+            }
+
+            // Render the first page
+            renderPage(pageNum);
+        }).catch(function(error) {
+            console.log(error);
+            pdfContainer.innerHTML = '<p>Unable to load PDF. Please try again later.</p>';
+        });
+    </script>
+
 </body>
 </html>
+
+
+
 
